@@ -1,0 +1,54 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neutralinojs/neutralinojs/main/schemas/neutralino.config.schema.json",
+  "applicationId": "app.generador.terreno",
+  "version": "1.0.0",
+  "defaultMode": "window",
+  "port": 0,
+  "documentRoot": "/public",
+  "url": "/",
+  "enableServer": true,
+  "enableNativeAPI": true,
+  "tokenSecurity": "one-time",
+  "logging": {
+    "enabled": true,
+    "writeToLogFile": true
+  },
+  "nativeAllowList": [
+    "app.*",
+    "os.*",
+    "filesystem.*",
+    "debug.log",
+    "filesystem.readFile",
+    "filesystem.readDir"
+  ],
+  "globalVariables": {},
+  "modes": {
+    "window": {
+      "title": "Generador de Terreno",
+      "width": 1024,
+      "height": 768,
+      "minWidth": 400,
+      "minHeight": 300,
+      "center": true,
+      "fullScreen": false,
+      "alwaysOnTop": false,
+      "icon": "/resources/icons/appIcon.png",
+      "enableInspector": true,
+      "borderless": false,
+      "maximize": false,
+      "hidden": false,
+      "resizable": true,
+      "transparent": false,
+      "exitProcessOnClose": true,
+      "args": "--disable-gpu-rasterization --disable-software-rasterizer"
+    }
+  },
+  "cli": {
+    "binaryName": "generador-terreno",
+    "resourcesPath": "/resources/",
+    "extensionsPath": "/extensions/",
+    "clientLibrary": "resources/js/neutralino.js",
+    "binaryVersion": "5.6.0",
+    "clientVersion": "5.6.0"
+  }
+}
