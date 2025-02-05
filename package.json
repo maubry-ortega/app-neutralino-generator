@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "node build.js",
-    "start": "node build.js && neu run"
+    "build": "node esbuild.config.js",
+    "start": "npm run build && neu run"
   },
   "dependencies": {
     "esbuild": "^0.24.2",
-    "fs": "^0.0.1-security",
-    "path": "^0.12.7",
     "phaser": "^3.87.0",
+    "seedrandom": "^3.0.5",
     "simplex-noise": "^4.0.3"
   },
   "devDependencies": {

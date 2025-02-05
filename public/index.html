@@ -4,14 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Generador de Terreno</title>
-  <link rel="icon" href="data:;base64,=">
-  <style>
-    * { margin: 0; padding: 0; }
-    #game-container { width: 100vw; height: 100vh; }
-  </style>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+  <div id="menu">
+    <h2>🌄 Generador de Terreno</h2>
+    <input type="text" id="seed-input" placeholder="Semilla (opcional)">
+    <button id="start-btn">Generar Mundo</button>
+  </div>
   <div id="game-container"></div>
-  <script type="module" src="./dist/bundle.js"></script>
+  <script type="module" src="/dist/bundle.js"></script>
 </body>
 </html>

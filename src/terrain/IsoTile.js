@@ -1,26 +1,20 @@
 export class IsoTile {
-  constructor(scene, x, y, height, colors) {
+  constructor(scene, x, y, height, color) {
     this.scene = scene;
     this.x = x;
     this.y = y;
     this.height = height;
-    this.colors = colors;
+    this.color = color;
   }
 
   draw(offsetX, offsetY) {
-    const isoX = (this.x - this.y) * 0.5 * 38 + offsetX;
-    const isoY = (this.x + this.y) * 0.25 * 38 + offsetY;
-    const color = this.getColorForHeight(this.height);
-    
-    const tile = this.scene.add.image(isoX, isoY, "tile").setTintFill(color);
-    tile.setOrigin(0.5, 0.5);
-  }
+    const tileSize = this.scene.tileSize || 38;  // Usa 38 si no está definido en la escena
+    const isoX = (this.x - this.y) * tileSize * 0.5 + offsetX;
+    const isoY = (this.x + this.y) * tileSize * 0.25 + offsetY - this.height * 0.3;
 
-  getColorForHeight(height) {
-    if (height < 20) return Phaser.Display.Color.HexStringToColor(this.colors.water).color;
-    if (height < 40) return Phaser.Display.Color.HexStringToColor(this.colors.lowLand).color;
-    if (height < 60) return Phaser.Display.Color.HexStringToColor(this.colors.midLand).color;
-    if (height < 80) return Phaser.Display.Color.HexStringToColor(this.colors.mountain).color;
-    return Phaser.Display.Color.HexStringToColor(this.colors.snow).color;
+    // Usamos graphics para evitar problemas con imágenes pequeñas
+    const graphics = this.scene.add.graphics();
+    graphics.fillStyle(this.color, 1);
+    graphics.fillRect(isoX, isoY, tileSize, tileSize);
   }
 }
