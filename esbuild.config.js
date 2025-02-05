@@ -7,14 +7,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 mkdirSync(path.join(__dirname, "public", "dist"), { recursive: true });
 
 esbuild.build({
-  entryPoints: [path.join(__dirname, "src", "main.js")],
+  entryPoints: [path.join(__dirname, "src", "main.ts")],
   bundle: true,
   outfile: path.join(__dirname, "public", "dist", "bundle.js"),
   format: "esm",
   sourcemap: true,
   minify: false,
   platform: "browser",
-  loader: { ".json": "json" },
+  loader: { ".json": "json", ".ts": "ts" },
   logLevel: "debug"
 })
 .then(() => console.log("⚡ Build completado"))
