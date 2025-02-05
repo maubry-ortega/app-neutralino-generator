@@ -6,7 +6,7 @@ import { GRID_SIZE, OFFSET } from "../config/constants";
 
 export class IsoScene extends Phaser.Scene {
   private seed: string;
-  public tileSize: number = 38; // Opcional: definir el tamaño del tile
+  public tileSize: number = 38;
 
   constructor(seed: string) {
     super({ key: "IsoScene" });
@@ -14,7 +14,6 @@ export class IsoScene extends Phaser.Scene {
   }
 
   preload(): void {
-    // No cargamos "tile" ya que usaremos gráficos
     this.load.json("colors", "./resources/colors.json");
   }
 

@@ -19,7 +19,6 @@ export class IsoTile {
     const tileSize = (this.scene as any).tileSize || 38;
     const isoX = (this.x - this.y) * tileSize * 0.5 + offsetX;
     const isoY = (this.x + this.y) * tileSize * 0.25 + offsetY - this.height * 0.3;
-
     const graphics = this.scene.add.graphics();
     graphics.fillStyle(this.color, 1);
     graphics.fillRect(isoX, isoY, tileSize, tileSize);

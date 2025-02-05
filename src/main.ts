@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 import { IsoScene } from "./game/IsoScene";
+import { WorldScene } from "./game/WorldScene";
 import { SeedManager } from "./utils/SeedManager";
+import "./di/DIConfig";  // Configura inyección de dependencias
 
 const startGame = (seed: string): void => {
   const config: Phaser.Types.Core.GameConfig = {
@@ -9,7 +11,7 @@ const startGame = (seed: string): void => {
     width: 800,
     height: 600,
     backgroundColor: "#2d2d2d",
-    scene: new IsoScene(seed)
+    scene: [new IsoScene(seed), new WorldScene(seed)]
   };
   new Phaser.Game(config);
 };

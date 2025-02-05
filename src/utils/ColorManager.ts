@@ -3,17 +3,10 @@ import { HEIGHT_LEVELS } from "../config/constants";
 
 export class ColorManager {
   private scene: Phaser.Scene;
-  private colors: {
-    water: string;
-    lowLand: string;
-    midLand: string;
-    mountain: string;
-    snow: string;
-  };
+  private colors: { water: string; lowLand: string; midLand: string; mountain: string; snow: string };
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
-    // Se asume que el JSON se carga correctamente
     this.colors = this.scene.cache.json.get("colors") as {
       water: string;
       lowLand: string;
