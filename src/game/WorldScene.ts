@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { World } from "../world/World";
 import { defaultWorldConfig } from "../world/WorldConfig";
-import { ColorManager } from "../utils/ColorManager";
+import { TerrainGenerator } from "../terrain/TerrainGenerator";
 
 export class WorldScene extends Phaser.Scene {
   private worldInstance: World;
@@ -15,59 +15,75 @@ export class WorldScene extends Phaser.Scene {
   }
 
   preload(): void {
+    this.load.json("biomes", "./resources/biomes.json");
     this.load.json("colors", "./resources/colors.json");
   }
 
   create(): void {
-    // Genera el mundo global
+    // Genera el mundo global (se generan todos los chunks)
     this.worldInstance.generateWorld();
 
-    // Configura los límites de la cámara
     const tileSize = 38;
-    const worldWidth = this.worldSize * this.chunkSize * tileSize;
-    const worldHeight = this.worldSize * this.chunkSize * tileSize;
+    const chunkPixelSize = this.chunkSize * tileSize;
+    const worldWidth = this.worldSize * chunkPixelSize;
+    const worldHeight = this.worldSize * chunkPixelSize;
     this.cameras.main.setBounds(0, 0, worldWidth, worldHeight);
 
-    // Agrega controles de teclado para mover la cámara
-    if (this.input && this.input.keyboard) {
-      this.cursors = this.input.keyboard.createCursorKeys();
-    } else {
-      console.error("Input or keyboard not available");
-    }
+    // Controles de cámara
+    this.cursors = this.input.keyboard!.createCursorKeys();
 
-    // Dibuja cada chunk como un rectángulo (usando el promedio de elevación)
-    const colorManager = new ColorManager(this);
+    // Instancia el TerrainGenerator para obtener mapas de altura y biomas
+    const terrainGenerator = new TerrainGenerator(this.worldInstance.getSeed());
+    const biomes = this.cache.json.get("biomes") as any[];
+
     const chunks = this.worldInstance.getAllChunks();
-    chunks.forEach(chunk => {
-      let sum = 0, count = 0;
-      for (let i = 0; i < chunk.tiles.length; i++) {
-        for (let j = 0; j < chunk.tiles[i].length; j++) {
-          sum += chunk.tiles[i][j];
-          count++;
+    chunks.forEach((chunk) => {
+      // Genera el mapa de alturas para este chunk usando un offset global
+      const heightMap = terrainGenerator.generateHeightMap(this.chunkSize, chunk.x * this.chunkSize, chunk.y * this.chunkSize);
+      const biomeMap = terrainGenerator.generateBiomeMap(heightMap);
+
+      // Para cada tile en el chunk, se dibuja un rectángulo con el color del bioma
+      for (let i = 0; i < biomeMap.length; i++) {
+        for (let j = 0; j < biomeMap[i].length; j++) {
+          const biomeId = biomeMap[i][j];
+          const biome = biomes.find((b: any) => b.id === biomeId) || { color: "#000000" };
+          // Asegura que biome.color sea un string
+          const colorString = typeof biome.color === "string" ? biome.color : "#000000";
+          const color = Phaser.Display.Color.HexStringToColor(colorString).color;
+          const x = chunk.x * chunkPixelSize + j * tileSize;
+          const y = chunk.y * chunkPixelSize + i * tileSize;
+          this.add.rectangle(x, y, tileSize, tileSize, color).setOrigin(0);
         }
       }
-      const avgElevation = count ? sum / count : 0;
-      const color = colorManager.getColor(avgElevation);
-      const chunkPixelSize = this.chunkSize * tileSize;
-      const rectX = chunk.x * chunkPixelSize;
-      const rectY = chunk.y * chunkPixelSize;
-      const graphics = this.add.graphics();
-      graphics.fillStyle(color, 1);
-      graphics.fillRect(rectX, rectY, chunkPixelSize, chunkPixelSize);
     });
 
-    // Instrucción
     this.add.text(10, 10, "Haz clic en el mapa para seleccionar un área", { color: "#ffffff" });
 
-    // Al hacer clic, calcula el chunk seleccionado y lanza la BiomeScene
+    // Al hacer clic, calcula el chunk seleccionado (ajustando por scroll) y lanza BiomeScene
     this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
       const worldX = pointer.worldX;
       const worldY = pointer.worldY;
-      const chunkPixelSize = this.chunkSize * tileSize;
-      const chunkX = Math.floor(worldX / chunkPixelSize);
-      const chunkY = Math.floor(worldY / chunkPixelSize);
+      const chunkX = Math.floor((worldX - this.cameras.main.scrollX) / chunkPixelSize);
+      const chunkY = Math.floor((worldY - this.cameras.main.scrollY) / chunkPixelSize);
       console.log(`Zona seleccionada: Chunk (${chunkX}, ${chunkY})`);
-      this.scene.start("BiomeScene", { seed: this.worldInstance.getSeed(), chunkX, chunkY });
+      if (chunkX >= 0 && chunkY >= 0 && chunkX < this.worldSize && chunkY < this.worldSize) {
+        this.scene.start("BiomeScene", { seed: this.worldInstance.getSeed(), chunkX, chunkY });
+      } else {
+        console.warn("Coordenadas fuera del rango del mundo.");
+      }
     });
+  }
+
+  update(): void {
+    if (this.cursors.left?.isDown) {
+      this.cameras.main.scrollX -= 5;
+    } else if (this.cursors.right?.isDown) {
+      this.cameras.main.scrollX += 5;
+    }
+    if (this.cursors.up?.isDown) {
+      this.cameras.main.scrollY -= 5;
+    } else if (this.cursors.down?.isDown) {
+      this.cameras.main.scrollY += 5;
+    }
   }
 }

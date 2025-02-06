@@ -1,0 +1,65 @@
+[
+  {
+    "id": "desert",
+    "name": "Desert",
+    "color": "#f4a460",
+    "emoji": "🏜️",
+    "tags": ["arid", "sand"],
+    "temperature": {
+      "min": 30,
+      "max": 50,
+      "variation": 0.2
+    },
+    "humidity": {
+      "min": 0,
+      "max": 10,
+      "seasonalEffect": 0.1
+    },
+    "waterColor": "#00ced1",
+    "grassColor": "#cdc9c9",
+    "resources": ["cactus", "sandstone"],
+    "elevation": { "min": 0, "max": 30 }
+  },
+  {
+    "id": "tundra",
+    "name": "Tundra",
+    "color": "#d3d3d3",
+    "emoji": "❄️",
+    "tags": ["cold", "snow"],
+    "temperature": {
+      "min": -20,
+      "max": 0,
+      "variation": 0.4
+    },
+    "humidity": {
+      "min": 10,
+      "max": 30,
+      "seasonalEffect": 0.3
+    },
+    "waterColor": "#1c92d2",
+    "grassColor": "#a9a9a9",
+    "resources": ["ice", "permafrost"],
+    "elevation": { "min": 70, "max": 100 }
+  },
+  {
+    "id": "default",
+    "name": "Default",
+    "color": "#228b22",
+    "emoji": "🌳",
+    "tags": ["generic"],
+    "temperature": {
+      "min": -10,
+      "max": 40,
+      "variation": 0.1
+    },
+    "humidity": {
+      "min": 0,
+      "max": 100,
+      "seasonalEffect": 0.1
+    },
+    "waterColor": "#4682b4",
+    "grassColor": "#228b22",
+    "resources": ["tree", "grass"],
+    "elevation": { "min": 31, "max": 69 }
+  }
+]

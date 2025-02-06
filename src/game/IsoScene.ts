@@ -21,6 +21,7 @@ export class IsoScene extends Phaser.Scene {
     const colorManager = new ColorManager(this);
     const generator = new TerrainGenerator(this.seed);
     const heightMap = generator.generateHeightMap(GRID_SIZE);
+
     this.drawTerrain(heightMap, colorManager);
   }
 

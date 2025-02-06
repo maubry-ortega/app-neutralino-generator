@@ -1,7 +1,7 @@
 {
-  "water": "#4A90E2",
-  "lowLand": "#77DD77",
-  "midLand": "#32CD32",
-  "mountain": "#8B4513",
-  "snow": "#FFFFFF"
+  "water": ["#4A90E2", "#357ABD"],
+  "lowLand": ["#77DD77", "#66CC66"],
+  "midLand": ["#32CD32", "#2BB12B"],
+  "mountain": ["#8B4513", "#6B3A13"],
+  "snow": ["#FFFFFF", "#E0E0E0"]
 }

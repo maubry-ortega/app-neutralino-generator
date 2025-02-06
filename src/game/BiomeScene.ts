@@ -27,20 +27,23 @@ export class BiomeScene extends Phaser.Scene {
 
   create(): void {
     const chunkSize = defaultWorldConfig.chunkSize;
-    const generator = new TerrainGenerator(this.seed);
-    const heightMap = generator.generateHeightMap(chunkSize);
+    // Para la vista detallada, generamos el chunk sin offset
+    const terrainGenerator = new TerrainGenerator(this.seed);
+    const heightMap = terrainGenerator.generateHeightMap(chunkSize);
     const colorManager = new ColorManager(this);
-    // Centra el chunk en la pantalla
     const offsetX = (this.cameras.main.width - chunkSize * this.tileSize) / 2;
     const offsetY = (this.cameras.main.height - chunkSize * this.tileSize) / 2;
+
     for (let x = 0; x < chunkSize; x++) {
       for (let y = 0; y < chunkSize; y++) {
         const color = colorManager.getColor(heightMap[x][y]);
         new IsoTile(this, x, y, heightMap[x][y], color).draw(offsetX, offsetY);
       }
     }
-    // Botón para volver a la vista global
-    const backText = this.add.text(10, 10, "Volver", { color: "#ffffff", fontSize: "20px" }).setInteractive();
+
+    const backText = this.add
+      .text(10, 10, "Volver", { color: "#ffffff", fontSize: "20px" })
+      .setInteractive();
     backText.on("pointerdown", () => {
       this.scene.start("WorldScene", { seed: this.seed });
     });
