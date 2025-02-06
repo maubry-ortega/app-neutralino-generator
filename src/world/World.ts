@@ -1,22 +1,25 @@
-// /src/world/World.ts
 import { WorldGenerator } from "./WorldGenerator";
 import { defaultWorldConfig } from "./WorldConfig";
 import { TimeManager } from "../time/TimeManager";
+import { Chunk } from "./chunks/Chunk";
 
 export class World {
   private generator: WorldGenerator;
   private timeManager: TimeManager;
+  private seed: string;
 
   constructor(seed: string, forcedBiome?: string) {
+    this.seed = seed;
     this.generator = new WorldGenerator(seed, forcedBiome);
     this.timeManager = new TimeManager({ dayLength: 300, nightLength: 300 });
   }
 
+  public getSeed(): string {
+    return this.seed;
+  }
+
   public updateTime(seconds: number): void {
     this.timeManager.tick(seconds);
-    console.log(`Hora actual: ${this.timeManager.getCurrentTimeFormatted()}`);
-    console.log(`Fase: ${this.timeManager.getCurrentPhase()}`);
-    console.log(`Progreso: ${this.timeManager.getProgress().toFixed(2)}%`);
   }
 
   public generateWorld(): void {
@@ -27,5 +30,9 @@ export class World {
       }
     }
     console.log("World generated!");
+  }
+
+  public getAllChunks(): Chunk[] {
+    return this.generator.getAllChunks();
   }
 }

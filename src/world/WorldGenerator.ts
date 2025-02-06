@@ -1,4 +1,3 @@
-// /src/world/WorldGenerator.ts
 import { NoiseGenerator } from "./noise/NoiseGenerator";
 import { BiomeRepository } from "./biomes/BiomeRepository";
 import { ChunkManager } from "./chunks/ChunkManager";
@@ -43,5 +42,9 @@ export class WorldGenerator {
     const chunk: Chunk = { x, y, tiles };
     this.chunkManager.addChunk(chunk);
     return chunk;
+  }
+
+  public getAllChunks(): Chunk[] {
+    return this.chunkManager.getAllChunks();
   }
 }

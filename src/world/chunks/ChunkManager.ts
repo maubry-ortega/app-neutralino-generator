@@ -14,4 +14,8 @@ export class ChunkManager {
   public getChunk(x: number, y: number): Chunk | undefined {
     return this.chunks.get(this.getChunkKey(x, y));
   }
+
+  public getAllChunks(): Chunk[] {
+    return Array.from(this.chunks.values());
+  }
 }
